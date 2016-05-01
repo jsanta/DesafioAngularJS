@@ -1,0 +1,29 @@
+button {
+    margin: 0 0 1em 0.5em ;
+}
+
+footer {
+    margin-top: 1em;
+    padding: 0.5em;
+    border-top: 1px solid #666;
+    text-align: right;
+}
+
+form label {
+    text-align: left!important;
+    padding-left: 4em!important;
+}
+#inputFrm {
+    border: 1px solid #666;
+    padding: 1em 1em 2em;
+}
+#confirmFrm {
+    border-left: 1px solid #666;
+}
+
+#confirmFrm input[disabled]{
+    background-color: #fff;
+    color: #1860b4;
+    border: none;
+    box-shadow: none;
+}
