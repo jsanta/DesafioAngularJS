@@ -22,16 +22,20 @@ form label {
     border-left: 1px solid #666;
 }
 
+/* Se agregan estilos para comportamiento hover de sobre la lista */
 .list-group-item:hover{
     background-color: #eee;
 }
 .list-group-item button {
     margin: -5px 0 0;
 }
+
+/* Se modifica color de los enlaces de la lista */
 .list-group-item a, .list-group-item a:hover {
     color: #666;
     text-decoration: none;
 }
+
 #confirmFrm input[disabled]{
     background-color: #fff;
     color: #1860b4;
@@ -39,6 +43,7 @@ form label {
     box-shadow: none;
 }
 
+/* Estilos especiales para lista sin paginación, con barra de desplazamiento vertical */
 .scrollList {
     height: 32em;
     overflow-y: auto;
