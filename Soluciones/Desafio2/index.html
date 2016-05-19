@@ -26,7 +26,8 @@
 
 <body>
     <!-- Aqui debe ir el contenido -->
-    <div class="container-fluid">
+    <!--        Se define la aplicacion angular-->
+    <div class="container-fluid" ng-app="desafioApp">
         <header>
             <h1><img src="http://placehold.it/120x80">
                         <a  href="#">XMart la mejor tienda</a></h1>
@@ -57,41 +58,59 @@
             </nav>
         </header>
 
-<!--        Se define la aplicacion angular-->
-        <section ng-app="desafioApp">
+<!--            Se define el controlador asociado. Se utilizara la notacion dCtrl para referirse a campos y funciones-->
+        <section  ng-controller="desafioController as dCtrl">
             <h2>Listado de clientes</h2>
             
-<!--            Se define el controlador asociado. Se utilizara la notacion dCtrl para referirse a campos y funciones-->
-            <div class="row" ng-controller="desafioController as dCtrl">
+<!--            Se agrega un checkbox para poder alternar entre la visualización con y sin paginación-->
+            <label class="checkbox-inline">
+                <input type="checkbox" id="showList" value="pagedList" ng-model="dCtrl.showPaged"> Ver con paginación
+            </label>
+            <hr />
+            
+
+            <div class="row" >            
+                
                 <div class="col-md-6">
-                    <div class="scrollList">
+                    
+<!--                    La visualización sin paginación utiliza un div como "wrapper"para la lista de clientes, y el atributo CSS overflow-y: auto para desplegar el scroll vetical cuando sea necesario.-->
+                    <div class="scrollList" ng-if="!dCtrl.showPaged">
                         <div class="list-group">
-                            <div class="list-group-item" ng-repeat="client in dCtrl.clientList">
-                                <a href="#" ng-click="dCtrl.editClient(client)">{{client.name}} {{client.lastname}}</a>
-                                <button type="button" class="btn btn-danger btn-sm pull-right">Borrar</button>
+<!--                            Se realiza la iteración sobre el arreglo original de clientes-->
+                            <div class="list-group-item" ng-repeat="client in dCtrl.clientList track by $index">
+                                <a href="#" ng-click="dCtrl.editClient(client, $index)">{{client.name}} {{client.lastname}}</a>
+                                <button type="button" class="btn btn-danger btn-sm pull-right" ng-click="dCtrl.deleteClient(client, $index)">Borrar</button>
                             </div>                            
                         </div>
                     </div>
-                    <hr />
-                    <div class="pagerList">
+                    
+<!--                    Se despliega el listado con paginación si el checkbox está marcado-->
+<!--                    Esta solución de paginación  siempre va a mostrar las N páginas disponibles. -->
+                    <div class="pagerList" ng-if="dCtrl.showPaged">
                         
                         <div class="list-group">
-                            <a href="#" class="list-group-item" ng-repeat="client in dCtrl.visibleClientsList" ng-click="dCtrl.editClient(client)">{{client.name}} {{client.lastname}}
-                                
-                            </a>
+<!--                            La iteración se realiza sobre un arreglo auxiliar que despliega sólo 10 registros-->
+                            <div class="list-group-item" ng-repeat="client in dCtrl.visibleClientsList track by $index">
+                                <a href="#" ng-click="dCtrl.editClient(client, $index)">{{client.name}} {{client.lastname}}</a>
+<!--                                El botón es alineado a la derecha utilizando pull-right y algunos ajustes en el archivo style.css-->
+                                <button type="button" class="btn btn-danger btn-sm pull-right" ng-click="dCtrl.deleteClient(client, $index)">Borrar</button>
+                            </div> 
                         </div>
                         <nav>
                             <ul class="pagination">
-                                <li>
-                                    <a aria-label="Previous" ng-click="dCtrl.prevPage()" ng-hide="dCtrl.isFirstPage()">
+<!--                                Si es la 1era página se esconde el botón Anterior-->
+                                <li ng-hide="dCtrl.isFirstPage()">
+                                    <a aria-label="Previous" ng-click="dCtrl.prevPage()">
                                         <span aria-hidden="true">&laquo;</span>
                                     </a>
                                 </li>
                                 
-                                <li ng-repeat="page in [].constructor(dCtrl.totalPages) track by $index" ng-class="{ 'active': dCtrl.isCurrentPage($index+1) }"><a ng-click="dCtrl.gotoPage($index+1)">{{$index+1}}</a></li>
+<!--                                Truco para iterar sobre un arreglo que "no existe", de modo de poder poner números correlativos-->
+                                <li ng-repeat="page in [].constructor(dCtrl.totalPages) track by $index" ng-class="{ 'active': dCtrl.isCurrentPage($index+1) }"><a href="#" ng-click="dCtrl.gotoPage($index+1, $event)">{{$index+1}}</a></li>
                                 
-                                <li>
-                                    <a aria-label="Next" ng-click="dCtrl.nextPage()"  ng-hide="dCtrl.isLastPage()">
+<!--                                Si es la ultima página se esconde el botón Siguiente-->
+                                <li ng-hide="dCtrl.isLastPage()">
+                                    <a aria-label="Next" ng-click="dCtrl.nextPage()">
                                         <span aria-hidden="true">&raquo;</span>
                                     </a>
                                 </li>
@@ -101,8 +120,9 @@
                     </div>                    
 
                 </div>
-                <div class="col-md-6">
-                    <form id="editFrm" class="form-horizontal">
+<!--                El formulario se muestra solamente cuando se hace click sobre un cliente-->
+                <div class="col-md-6" ng-if="dCtrl.showEdit">
+                    <form id="editFrm" class="form-horizontal" ng-submit="dCtrl.updateClientInfo(dCtrl.editData)">
                         
 <!--                        Loa datos del formulario de ingreso son asociados como atributos del objeto editData en el controlador-->
                         <div class="form-group">
@@ -121,18 +141,34 @@
                         </div>
                         <div class="form-group">
                             <label for="address1" class="col-sm-4 control-label">Dirección 1</label>
-                            <div class="col-sm-8"><input type="text" class="form-control" id="address1" disabled ng-model="dCtrl.editData.address1"></div>
+                            <div class="col-sm-8"><input type="text" class="form-control" id="address1" ng-disabled="!dCtrl.editEnabled" ng-model="dCtrl.editData.address1" required></div>
                         </div>
                         <div class="form-group">
                             <label for="address2" class="col-sm-4 control-label">Dirección 2</label>
-                            <div class="col-sm-8"><input type="text" class="form-control" id="address2" disabled ng-model="dCtrl.editData.address2"></div>
+                            <div class="col-sm-8"><input type="text" class="form-control" id="address2" ng-disabled="!dCtrl.editEnabled" ng-model="dCtrl.editData.address2" required></div>
                         </div>
                         
+<!--                        Este bloque es desplegado unicamente si el registro tiene datos para RUT y teléfono, o si está habilitada la edicion-->
+                        <div ng-if="dCtrl.editEnabled || (dCtrl.editData.rut && dCtrl.editData.phone)">
+                            <div class="form-group">
+                                <label for="rut" class="col-sm-4 control-label">RUT</label>
+<!--                                El campo RUT utiliza la siguiente expresión regular para validar la forma del RUT ingresado [\d]{7,8}[-]?[\dkK]{1}-->
+                                <div class="col-sm-8"><input type="text" class="form-control" id="rut" ng-disabled="!dCtrl.editEnabled" ng-model="dCtrl.editData.rut" pattern="[\d]{7,8}[-]?[\dkK]{1}" title="RUT en formato 12345678-k" required></div>
+                            </div>                        
+                            <div class="form-group">
+                                <label for="phone" class="col-sm-4 control-label">Teléfono</label>
+<!--                                El campo teléfono utiliza la siguiente expresión regular para validar la forma de los datos ingresados [+]?[\d]{2}[\s-]?([\d]{1,2}[\s-]?)?([\d]{7,11})-->
+                                <div class="col-sm-8"><input type="tel" class="form-control" id="phone" ng-disabled="!dCtrl.editEnabled" ng-model="dCtrl.editData.phone" pattern="[+]?[\d]{2}[\s-]?([\d]{1,2}[\s-]?)?([\d]{7,11})" title="Teléfono en formato +56123456987" required></div>
+                            </div>
+                        </div>                        
                         
+                        <button type="button" class="btn btn-info pull-right" ng-click="dCtrl.enableEdit()" ng-if="dCtrl.showEdit && !dCtrl.editEnabled">Editar</button>
 
 <!--                        El botón Confirmar se despliega cuando la variable showConfirm=true . Al hacer click sobre este botòn se llama a la función showConfirmation que muestra el mensaje de alerta. -->
-                        <button type="button" class="btn btn-primary pull-right" ng-show="dCtrl.showConfirm" ng-click="dCtrl.showConfirmation()">Confirmar</button>
+                        <button type="submit" class="btn btn-primary pull-right" ng-show="dCtrl.editEnabled">Confirmar</button>
                         &nbsp;
+                        <button type="reset" class="btn btn-danger pull-right" ng-show="dCtrl.editEnabled" ng-click="dCtrl.cleanForm($event)">Limpiar</button>&nbsp;
+                        
                         <br />
                     </form>
                 </div>
