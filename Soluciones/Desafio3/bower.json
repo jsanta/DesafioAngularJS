@@ -1,0 +1,28 @@
+{
+  "name": "Solucion Desafio 3 - Desafio AngularJS",
+  "homepage": "https://github.com/jsanta/DesafioAngularJS",
+  "authors": [
+    "Jose Ignacio Santa Cruz G. <jose.santacruz@solem.cl>"
+  ],
+  "description": "",
+  "main": "index.html",
+  "keywords": [
+    "angularjs",
+    "challenge",
+    "tutorial"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-messages": "^1.5.6",
+    "bootstrap": "^3.3.6",
+    "lodash": "^4.13.1"
+  }
+}
