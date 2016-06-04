@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>XMart la mejor tienda</title>
+
+    <!-- Bootstrap -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css" />
+
+    <link rel="stylesheet" href="css/style.css" />
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+            <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+</head>
+
+<body>
+    <!-- Aqui debe ir el contenido -->
+    <div class="container-fluid" ng-app="desafioApp">
+        <header>
+            <h1><img src="http://placehold.it/120x80">
+                        <a  href="#">XMart la mejor tienda</a></h1>
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                    </div>
+
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            <li class="active"><a href="#">Inicio <span class="sr-only">(actual)</span></a></li>
+                            <li><a href="#">Blog</a></li>
+                            <li><a href="#">Tienda</a></li>
+                            <li><a href="#">Contacto</a></li>
+                        </ul>
+                    </div>
+                    <!-- /.navbar-collapse -->
+                </div>
+                <!-- /.container-fluid -->
+            </nav>
+        </header>
+
+        <!--        Se define la aplicacion angular-->
+        <section ng-controller="desafioController as dCtrl">
+            <h2>Datos personales</h2>
+
+            <!--            Se agrega un checkbox para poder alternar entre la visualización con y sin paginación-->
+            <label class="checkbox-inline">
+                <input type="checkbox" id="chkDebug" value="debug" ng-model="dCtrl.debug"> Habilitar debug
+            </label>
+            <hr />
+
+            <!--            Se define el controlador asociado. Se utilizara la notacion dCtrl para referirse a campos y funciones-->
+            <div class="row">
+                <div class="col-md-6">
+
+                    <!--                    Se utiliza ng-submit para invocar la funcion sendData solamente cuando el formulario sea valido                -->
+                    <!--                    El atributo novalidate se asegura que el motor de despliegue de HTML del navegador no realice las validaciones HTML5 sobre el formulario-->
+                    <form name="inputFrm" class="form-horizontal" ng-submit="dCtrl.sendData(inputFrm.$valid)" novalidate>
+
+                        <!--                        Loa datos del formulario de ingreso son asociados como atributos del objeto inputData en el controlador-->
+                        <div class="form-group">
+                            <label for="name" class="col-sm-4 control-label">Nombres</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="name" name="name" aria-describedby="nameHelp" placeholder="ingrese su nombre"
+                                       required
+                                       ng-model="dCtrl.inputData.name"
+                                       ng-minlength="2"
+                                       ng-maxlength="40">
+                            </div>
+
+                            <span id="nameStatus" class="sr-only" ng-show="inputFrm.name.$valid">(OK)</span>
+                            <span id="nameHelp" class="help-block pull-right" ng-messages="inputFrm.name.$error" ng-if="(!dCtrl.formValid && inputFrm.name.$invalid) || inputFrm.name.$dirty">
+                              <div ng-message="required" class="text-danger">Este campo es requerido.</div>
+                                <div ng-message="minlength" class="text-danger">Ingrese al menos 2 carácteres.</div>
+                                <div ng-message="maxlength" class="text-danger">Largo máximo excedido.</div>
+                            </span>
+                        </div>
+                        <pre ng-if="dCtrl.debug">inputFrm.name.$error = {{ inputFrm.name.$error | json }}</pre>
+
+                        <div class="form-group">
+                            <label for="lastname" class="col-sm-4 control-label">Apellidos</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="lastname" name="lastname" aria-describedby="lastnameHelp" placeholder="ingrese su apellido"
+                                       required
+                                       ng-model="dCtrl.inputData.lastname"
+                                       ng-minlength="2"
+                                       ng-maxlength="40">
+                            </div>
+
+                            <span id="lastnameStatus" class="sr-only" ng-show="inputFrm.lastname.$valid">(OK)</span>
+                            <span id="lastnameHelp" class="help-block pull-right" ng-messages="inputFrm.lastname.$error" ng-if="(!dCtrl.formValid && inputFrm.lastname.$invalid) || inputFrm.lastname.$dirty">
+                              <div ng-message="required" class="text-danger">Este campo es requerido.</div>
+                                <div ng-message="minlength" class="text-danger">Ingrese al menos 2 carácteres.</div>
+                                <div ng-message="maxlength" class="text-danger">Largo máximo excedido.</div>
+                            </span>
+                        </div>
+                        <pre ng-if="dCtrl.debug">inputFrm.lastname.$error = {{ inputFrm.lastname.$error | json }}</pre>
+
+<!--                        Se agrega ua validacion por patron al correo electronico ya que la validacion del navegador no es lo suficientemente rigurosa.-->
+                        <div class="form-group">
+                            <label for="email" class="col-sm-4 control-label">Correo</label>
+                            <div class="col-sm-8">
+                                <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" placeholder="ingrese su correo"
+                                       required
+                                       ng-minlength="6"
+                                       ng-pattern="dCtrl.emailRegExp"
+                                       ng-model="dCtrl.inputData.email">
+                            </div>
+
+                            <span id="emailStatus" class="sr-only" ng-show="inputFrm.email.$valid">(OK)</span>
+                            <span id="emailHelp" class="help-block pull-right" ng-messages="inputFrm.email.$error" ng-if="(!dCtrl.formValid && inputFrm.email.$invalid) || inputFrm.email.$dirty">
+                              <div ng-message="required" class="text-danger">Este campo es requerido.</div>
+                                <div ng-message="email" class="text-danger">Ingrese un correo electrónico válido.</div>
+                                <div ng-message="pattern" class="text-danger">Ingrese un correo electrónico válido.</div>
+                                <div ng-message="minlength" class="text-danger">Ingrese al menos 6 carácteres.</div>
+                            </span>
+                        </div>
+                        <pre ng-if="dCtrl.debug">inputFrm.email.$error = {{ inputFrm.email.$error | json }}</pre>
+
+                        <div class="form-group">
+                            <label for="address1" class="col-sm-4 control-label">Dirección</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="address1" name="address1" aria-describedby="address1Help" placeholder="su dirección"
+                                       required
+                                       ng-minlength="5"
+                                       ng-model="dCtrl.inputData.address1">
+                            </div>
+
+                            <span id="address1Status" class="sr-only" ng-show="inputFrm.address1.$valid">(OK)</span>
+                            <span id="address1Help" class="help-block pull-right" ng-messages="inputFrm.address1.$error" ng-if="(!dCtrl.formValid && inputFrm.address1.$invalid) || inputFrm.address1.$dirty">
+                              <div ng-message="required" class="text-danger">Este campo es requerido.</div>
+                                <div ng-message="minlength"  class="text-danger">Ingrese al menos 5 carácteres.</div>
+                            </span>
+                        </div>
+                        <pre ng-if="dCtrl.debug">inputFrm.address1.$error = {{ inputFrm.address1.$error | json }}</pre>
+
+                        <div class="form-group row">
+
+                            <div class="select col-sm-4 col-sm-offset-4">
+                                <label for="region" class="control-label">Región</label>
+                                <select id="region" name="region" class="form-control"
+                                        required
+                                        ng-model="dCtrl.inputData.region"
+                                        ng-options="region for region in dCtrl.regiones">
+                                    <option value='' disabled selected hidden ng-show="!dCtrl.inputData.region">seleccione region</option>
+                                </select>
+
+                                <span id="regionStatus" class="sr-only" ng-show="inputFrm.region.$valid">(OK)</span>
+                                <span id="regionHelp" class="help-block pull-right" ng-messages="inputFrm.region.$error" ng-if="!dCtrl.formValid && inputFrm.region.$invalid">
+                                  <div ng-message="required" class="text-danger">Este campo es requerido.</div>
+                                </span>
+                                <pre ng-if="dCtrl.debug">inputFrm.region.$error = {{ inputFrm.region.$error | json }}</pre>
+                            </div>
+<!--
+                            El campo comunas se habilitará solamente cuando se haya seleccionado una region.
+                            El listado tomará los valores correspondientes a la llave "region", del objeto agrupado. busqueda de orden 1 (tipo hashmap)
+-->
+                            <div class="select col-sm-4">
+                                <label for="comuna" class="control-label">Comuna</label>
+                                <select id="comuna" name="comuna" class="form-control"
+                                        required
+                                        ng-disabled="!dCtrl.inputData.region"
+                                        ng-model="dCtrl.inputData.comuna"
+                                        ng-options="comuna as comuna.name for comuna in dCtrl.comunas[dCtrl.inputData.region]">
+                                    <option value='' disabled selected hidden ng-show="!dCtrl.inputData.comuna">seleccione comuna</option>
+                                </select>
+
+                                <span id="comunaStatus" class="sr-only" ng-show="inputFrm.comuna.$valid">(OK)</span>
+                                <span id="comunaHelp" class="help-block pull-right" ng-messages="inputFrm.comuna.$error" ng-if="!dCtrl.formValid && inputFrm.comuna.$invalid">
+                                  <div ng-message="required" class="text-danger">Este campo es requerido.</div>
+                                </span>
+                                <pre ng-if="dCtrl.debug">inputFrm.comuna.$error = {{ inputFrm.comuna.$error | json }}</pre>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary pull-right" ng-disabled="dCtrl.forceClean">Ingresar</button>
+
+                        <!--                        La funcion cleanData se ejecuta cuando se hace click sobre el botón Limpiar de tipo Reset-->
+                        <button type="reset" class="btn btn-danger pull-right" ng-click="dCtrl.cleanData(inputFrm)">Limpiar</button>&nbsp;
+                        <br />
+                        <pre ng-if="dCtrl.debug">inputFrm.$error = {{ inputFrm.$error | json }}</pre>
+                        <pre ng-if="dCtrl.debug">inputFrm.$valid = {{ inputFrm.$valid | json }}</pre>
+                        <pre ng-if="dCtrl.debug">inputFrm.$invalid = {{ inputFrm.$invalid | json }}</pre>
+                    </form>
+                </div>
+                <div class="col-md-6">
+                    <form id="confirmFrm" class="form-horizontal">
+
+                        <!--                        Loa datos del formulario de ingreso son asociados como atributos del objeto confirmData en el controlador-->
+                        <div class="form-group">
+                            <label for="name" class="col-sm-4 control-label">Nombres</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="name" disabled ng-model="dCtrl.confirmData.name">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="lastname" class="col-sm-4 control-label">Apellidos</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="lastname" disabled ng-model="dCtrl.confirmData.lastname">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email" class="col-sm-4 control-label">Correo</label>
+                            <div class="col-sm-8">
+                                <input type="email" class="form-control" id="email" disabled ng-model="dCtrl.confirmData.email">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="address1" class="col-sm-4 control-label">Dirección</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="address1" disabled ng-model="dCtrl.confirmData.address1">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="address2" class="col-sm-4 control-label">&nbsp;</label>
+                            <div class="col-sm-8 blue-text" ng-if="dCtrl.confirmData.comuna">
+                                {{dCtrl.confirmData.region}}, comuna de {{dCtrl.confirmData.comuna.name}}
+                            </div>
+                        </div>
+
+
+
+                        <!--                        El botón Confirmar se despliega cuando la variable showConfirm=true . Al hacer click sobre este botòn se llama a la función showConfirmation que muestra el mensaje de alerta. -->
+                        <button type="button" class="btn btn-primary pull-right" ng-show="dCtrl.showConfirm && dCtrl.confirmData" ng-click="dCtrl.showConfirmation()">Confirmar</button>
+                        &nbsp;
+                        <br />
+                    </form>
+                </div>
+            </div>
+
+        </section>
+
+        <footer>
+            <a href="#">Sitio diseñado por JSanta Enterprises 2016</a>
+        </footer>
+
+    </div>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/angular/angular.min.js"></script>
+    <script src="bower_components/angular-messages/angular-messages.min.js"></script>
+
+    <script src="bower_components/lodash/dist/lodash.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <script src="js/comunas.js"></script>
+    <script src="js/desafioApp.js"></script>
+
+</body>
+
+</html>
