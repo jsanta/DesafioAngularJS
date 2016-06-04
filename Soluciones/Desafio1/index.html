@@ -60,11 +60,11 @@
 <!--        Se define la aplicacion angular-->
         <section ng-app="desafioApp">
             <h2>Datos personales</h2>
-            
+
 <!--            Se define el controlador asociado. Se utilizara la notacion dCtrl para referirse a campos y funciones-->
             <div class="row" ng-controller="desafioController as dCtrl">
                 <div class="col-md-6">
-                    
+
 <!--                    Se utiliza ng-submit para invocar la funcion sendData solamente cuando el formulario sea valido                -->
                     <form id="inputFrm" class="form-horizontal" ng-submit="dCtrl.sendData()">
 
@@ -93,7 +93,7 @@
                         </div>
 
                         <button type="submit" class="btn btn-primary pull-right">Ingresar</button>
-                        
+
 <!--                        La funcion cleanData se ejecuta cuando se hace click sobre el botón Limpiar de tipo Reset-->
                         <button type="reset" class="btn btn-danger pull-right" ng-click="dCtrl.cleanData()">Limpiar</button>&nbsp;
                         <br />
@@ -101,7 +101,7 @@
                 </div>
                 <div class="col-md-6">
                     <form id="confirmFrm" class="form-horizontal">
-                        
+
 <!--                        Loa datos del formulario de ingreso son asociados como atributos del objeto confirmData en el controlador-->
                         <div class="form-group">
                             <label for="name" class="col-sm-4 control-label">Nombres</label>
