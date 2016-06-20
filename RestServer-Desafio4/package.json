@@ -1,0 +1,29 @@
+{
+  "name": "resetserver-desafio4",
+  "version": "1.0.0",
+  "description": "API Rest para ser utilizada en el Desafio 4 - Desafio AngularJS",
+  "private": true,
+  "main": "start.js",
+  "scripts": {
+    "start": "node start.js",
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/jsanta/DesafioAngularJS.git"
+  },
+  "keywords": [
+    "node",
+    "rest",
+    "api",
+    "angularjs",
+    "desafio",
+    "angularjs",
+    "firebase"
+  ],
+  "author": "Jose Ignacio Santa Cruz G (j@santa.cl)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jsanta/DesafioAngularJS/issues"
+  },
+  "homepage": "https://github.com/jsanta/DesafioAngularJS#readme"
+}

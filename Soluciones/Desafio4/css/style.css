@@ -1,0 +1,51 @@
+button {
+    margin: 0 0 1em 0.5em ;
+}
+
+footer {
+    margin-top: 1em;
+    padding: 0.5em;
+    border-top: 1px solid #666;
+    text-align: right;
+}
+
+form label {
+    text-align: left!important;
+    padding-left: 4em!important;
+}
+#inputFrm {
+    border: 1px solid #666;
+    padding: 1em 1em 2em;
+}
+
+#confirmFrm {
+    border-left: 1px solid #666;
+}
+
+/* Se agregan estilos para comportamiento hover de sobre la lista */
+.list-group-item:hover{
+    background-color: #eee;
+}
+.list-group-item button {
+    margin: -5px 0 0;
+}
+
+/* Se modifica color de los enlaces de la lista */
+.list-group-item a, .list-group-item a:hover {
+    color: #666;
+    text-decoration: none;
+}
+
+#confirmFrm input[disabled]{
+    background-color: #fff;
+    color: #1860b4;
+    border: none;
+    box-shadow: none;
+}
+
+/* Estilos especiales para lista sin paginación, con barra de desplazamiento vertical */
+.scrollList {
+    height: 32em;
+    overflow-y: auto;
+    padding: 1em;
+}
